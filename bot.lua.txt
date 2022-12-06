@@ -1,0 +1,175 @@
+
+
+-- // Human Shitter
+    print 'Super_Sticky';
+
+-- // Data
+local Data = {
+    Owners = {'nwuIIz', 'MicrosoftIight'},
+    Friends = {'iiomq_Scarf', 'sco_osz', 'vh7z', 'ReincarnatedEnergy', 'bludgrl',  'sleep6n', 'i_db', 'gravephills', 'shrekccc',},
+    Whitelisted = { 'Mp3Alt', 'takexanseveryday', 'neversIeeping', 'iBlaxoul', 'HusuBlox', 'uhmlizzq', 'fdxcvcxvxc', 'sohogrifter', 'GiantTackycrazy2', 'kaistepbro', 'putmeinapsychward', 'Alabama3123', 'swag_manW', 'rot5', 'PEOBAB_w0', 'hai', 'Poland', 'iqlzzu_2', 'k0_ddiALT', 'Fxnd0', 'faiienmurderz', 'PLanksu', 'purgcy', '4x1qt', '4doe7bt7uctwbvyqfac6', 'JON7THN', 'BRITISH_QUEEN', 'drulolll', 'lockupluke', 'V1_N9', 'az_vb', 'Underworld_Girly', 'getcha', 'boogieman8730275', 'r4eal', 'YXUNG_MANE', 'b1eire', 'CharmCatz', 'Kylzz_z', '1234562', 'Mestalic', 'cutseyrips', 'jiqqt', 'ETnoemy', 'XMAS_rev', 'G07Z6', 'Chunkyimpala', 'ghostslashafanboy', 'l50hp',},
+    Blacklisted = {'YourDailyPepsi66', 'koopa346', 'mysz689', 'x24kenny', 'ouchqie', 'Redwoodzar', 'e1dorbb',},
+    Messages = {
+        ['Owners'] = 'Detected Owner (%s). Serverhopping...',
+        ['Friends'] = 'Detected Whitelisted Friend (%s). Serverhopping...',
+        ['Whitelisted'] = 'Detected Whitelisted User (%s). Serverhopping...',
+        ['Blacklisted'] = 'Detected Blacklisted User (%s). Have fun for 18 minutes.',
+    }
+}
+
+
+repeat wait() until game:isLoaded()
+
+-- // Other
+local FoundBLU = false;
+local LeaveServer = false;
+local plrs = game:GetService('Players');
+local plr = game:GetService('Players').LocalPlayer;
+local NewServer = function()
+    spawn(function()
+        local Servers = {};
+
+        for _, v in next, game:GetService('HttpService'):JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/417267366/servers/Public?sortOrder=Asc&limit=100')).data do
+            if v.playing < v.maxPlayers - 1 and v.id ~= game.JobId then
+                table.insert(Servers, v.id)
+            end
+        end
+
+        repeat pcall(function() game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, Servers[math.random(1, #Servers)]) end); wait(); until not game;
+    end)
+end
+
+spawn(function()
+    while task.wait() do
+        if FoundBLU then
+            break
+        end
+    
+        for _, v in next, plrs:GetPlayers() do
+            for __, v2 in next, Data do
+                if __ ~= 'Messages' and __ ~= 'Blacklisted' then
+                    if table.find(v2, v.Name) then
+                        LeaveServer = true;
+                        game:GetService('ReplicatedStorage').DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Data.Messages[__]:format(v.DisplayName), 'All');
+                        game:GetService('ReplicatedStorage').DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Data.Messages[__]:format(v.DisplayName), 'All');
+                        game:GetService('ReplicatedStorage').DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Data.Messages[__]:format(v.DisplayName), 'All');
+                    end
+                elseif __ == 'Blacklisted' then
+                    if table.find(v2, v.Name) then
+                        FoundBLU = v;
+                        game:GetService('ReplicatedStorage').DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Data.Messages[__]:format(v.DisplayName), 'All');
+                        game:GetService('ReplicatedStorage').DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Data.Messages[__]:format(v.DisplayName), 'All');
+                        game:GetService('ReplicatedStorage').DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Data.Messages[__]:format(v.DisplayName), 'All');
+                    end
+                end
+            end
+        end
+
+        if LeaveServer then
+            repeat pcall(NewServer); task.wait() until not game;
+        end
+    end
+end)
+
+for _,z in next, workspace:GetChildren() do
+    if z~=workspace.CurrentCamera and z.Name ~= "Terrain" then
+        if z:IsA'Model' and not game.Players:FindFirstChild(z.Name) then
+            z:Destroy()
+        end
+        if z:IsA'BasePart' then
+            z:Destroy()
+        end
+    end
+end
+
+game.Workspace.Terrain:ClearAllChildren()
+
+delay(80, function()
+    if not FoundBLU then
+        repeat pcall(NewServer); wait() until not game;
+    end
+end)
+
+for _, v in next, workspace:GetDescendants() do
+    if v:IsA('Seat') then
+        v:Destroy();
+    end
+end
+
+wait(1)
+-- // Fling Script
+local Fling = function(Player, Delay)
+    pcall(function()
+workspace.CurrentCamera.CameraSubject = Player.Character.Humanoid
+        local Chr = Player.Character.HumanoidRootPart;
+        local Hrp = plr.Character.HumanoidRootPart;
+        local LastCF = Hrp.CFrame;
+        local Delay = Delay or 1/5;
+
+       Fling = game:GetService('RunService').Heartbeat:Connect(function()
+            pcall(function()
+                plr.Character:SetPrimaryPartCFrame(Chr.CFrame)
+                Hrp.CFrame = Chr.CFrame * CFrame.Angles(90, math.rad(0), 90);
+                Hrp.Velocity = Vector3.new(9e9, 9e9, 9e9);
+                Hrp.RotVelocity = Vector3.new(9e9, 9e9, 9e9);
+if Player.Character.Humanoid.MoveDirection.Magnitude > 0 then
+Hrp.CFrame = Chr.CFrame * CFrame.Angles(0, math.rad(90), 0) * CFrame.new(0, 0, math.random(-10,15));
+end
+            end)
+        end)
+
+        wait(Delay)
+        Fling:Disconnect();
+        for i = 1, 10 do
+            pcall(function()
+                plr.Character:SetPrimaryPartCFrame(LastCF);
+                plr.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0);
+                plr.Character.HumanoidRootPart.RotVelocity = Vector3.new(0, 0, 0);
+            end)
+        end
+    end)
+end
+
+spawn(function()
+    while wait() do
+        if FoundBLU then
+            local Tiks = 0;
+            repeat wait(1); Fling(plrs[FoundBLU]); Tiks = Tiks + 1; until not plrs:FindFirstChild(FoundBLU) or Tiks == 1080;
+            NewServer();
+        end
+    end
+end)
+
+spawn(function()
+    while wait(2) do
+        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("krone0001 | gg/p9sU8YPJ5k", "All")
+        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("krone0001 | gg/p9sU8YPJ5k", "All")
+        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("krone0001 | gg/p9sU8YPJ5k", "All")
+    end
+end)
+
+
+spawn(function()
+while wait() do
+    for _, v in next, plrs:GetPlayers() do
+        Fling(v, .5)
+        pcall(function()
+            plr.Character.Humanoid.Sit = false
+        end)
+    end
+end
+end)
+
+
+repeat wait() until game.CoreGui:FindFirstChild('RobloxPromptGui')
+
+local lp,po,ts = game:GetService('Players').LocalPlayer,game.CoreGui.RobloxPromptGui.promptOverlay,game:GetService('TeleportService')
+
+po.ChildAdded:connect(function(a)
+    if a.Name == 'ErrorPrompt' then
+        repeat
+            ts:Teleport(game.PlaceId)
+            wait(2)
+        until false
+    end
+end)
